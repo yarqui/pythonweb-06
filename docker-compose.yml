@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:17.5
+    container_name: 06_postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass2
+      POSTGRES_DB: myappdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d myappdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 06_sqlalchemy
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://admin:pass2@db:5432/myappdb"
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - app_storage:/app/storage
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:
+    driver: local
+  app_storage:
+    driver: local
