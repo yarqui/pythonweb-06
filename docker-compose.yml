@@ -25,7 +25,10 @@ services:
     container_name: 06_sqlalchemy
     restart: unless-stopped
     environment:
+      # URL for main ASYNC application
       DATABASE_URL: "postgresql+asyncpg://admin:pass2@db:5432/myappdb"
+      # URL SYNC Alembic operations
+      ALEMBIC_DATABASE_URL: "postgresql+psycopg2://admin:pass2@db:5432/myappdb"
     volumes:
       - ./src:/app/src
       - ./migrations:/app/migrations

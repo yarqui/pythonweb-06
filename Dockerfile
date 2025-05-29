@@ -39,7 +39,7 @@ RUN poetry install --no-interaction --no-root
 
 # Copy the rest of the application
 COPY ./src ./src
-COPY ./alembic ./alembic/
+COPY ./migrations ./migrations/
 COPY alembic.ini ./
 
 # Runtime Configuration
@@ -47,4 +47,4 @@ VOLUME ["/app/storage/"]
 
 EXPOSE 3000
 
-CMD ["poetry", "run", "python", "src/main.py"]
+CMD ["tail", "-f", "/dev/null"]
