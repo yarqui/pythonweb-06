@@ -35,21 +35,21 @@ _(Poetry is used for Python dependency management within the Docker image, so yo
 
 All the following commands should be run from your project root directory on your host machine. They use `docker-compose exec` to run commands inside the running `app` container.
 
-1.  **Step 1: Apply Database Migrations**
+1.  **Apply Database Migrations**
     This command uses Alembic to apply all pending migrations, which will create the necessary tables in your PostgreSQL database based on your SQLAlchemy models.
 
     ```bash
     docker-compose exec app poetry run alembic upgrade head
     ```
 
-2.  **Step 2: Seed the Database with Initial Data**
+2.  **Seed the Database with Initial Data**
     This command runs the `seed.py` script, which populates your database tables with randomly generated data.
 
     ```bash
     docker-compose exec app poetry run python -m src.seed
     ```
 
-3.  **Step 3: Run Select Queries**
+3.  **Run Select Queries**
     This command runs the `my_select.py` script, which executes 10 predefined queries against the database and prints their results to the console.
     ```bash
     docker-compose exec app poetry run python -m src.my_select
